@@ -2,19 +2,51 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.vaadin.wscdn</groupId>
-        <artifactId>wscdn</artifactId>
-        <version>0.0.3-SNAPSHOT</version>
-    </parent>    
+        <groupId>com.vaadin</groupId>
+        <artifactId>vaadin-parent</artifactId>
+        <version>1.0.0</version>
+    </parent>
     <artifactId>wscdn-client</artifactId>
     <packaging>jar</packaging>
-    <description>cdn.virit.in widgetset compiler client</description>
+    <description>Vaadin widgetset compiler client</description>
+    <url>https://vaadin.com/</url>
+
+    <developers>
+        <developer>
+            <name>Sami Ekblad</name>
+            <organization>Vaadin Ltd</organization>
+        </developer>
+        <developer>
+            <name>Matti Tahvonen</name>
+            <organization>Vaadin Ltd</organization>
+        </developer>
+        <developer>
+            <name>Henri Sara</name>
+            <organization>Vaadin Ltd</organization>
+        </developer>
+    </developers>
 
     <properties>
         <build.timestamp>${maven.build.timestamp}</build.timestamp>
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <vaadin.version>7.6.6</vaadin.version>
+        <failOnMissingWebXml>false</failOnMissingWebXml>
+        <jetty.port>8080</jetty.port>
+        <wildfly.port>8081</wildfly.port>
     </properties>
-    
+
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/vaadin/wscdn-client/issues</url>
+    </issueManagement>
+
+    <scm>
+        <url>git://github.com/vaadin/wscdn-client.git</url>
+        <connection>scm:git:git://github.com/vaadin/wscdn-client.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:/vaadin/wscdn-client.git</developerConnection>
+    </scm>
+
     <dependencies>
         <dependency>
             <groupId>com.vaadin</groupId>
@@ -29,7 +61,7 @@
             <version>7.0</version>
             <scope>provided</scope>
         </dependency>
-        
+
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
@@ -37,9 +69,9 @@
         </dependency>
 
     </dependencies>
-    
+
     <build>
-        
+
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -57,7 +89,6 @@
             </resource>
         </resources>
 
-        
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -85,10 +116,49 @@
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
-            </plugin>            
+            </plugin>
+
+            <!-- Generate javadoc and sources -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- oss.sonatype.org staging  -->
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.5</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>vaadin-staging</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>false</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
-    
-    
 
 </project>
