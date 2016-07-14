@@ -8,6 +8,7 @@
     </parent>
     <version>0.9.0-SNAPSHOT</version>
     <artifactId>wscdn-client</artifactId>
+    <groupId>com.vaadin</groupId>
     <packaging>jar</packaging>
     <description>Vaadin widgetset compiler client</description>
     <url>https://vaadin.com/</url>
