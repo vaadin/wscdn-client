@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+import javax.ws.rs.RedirectionException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -89,11 +90,24 @@ public class Connection {
 
     public String downloadRemoteWidgetSet(WidgetSetRequest wsReq,
             File targetDirectory) throws FileNotFoundException, IOException {
-        Response response = downloadTarget
-                .request("application/x-zip").header("User-Agent",
-                        getUA())
-                .post(Entity.json(wsReq));
-        String wsName = response.getHeaderString("wsId");
+        Response response;
+        try {
+            response = downloadTarget
+                    .request("application/x-zip").header("User-Agent",
+                            getUA())
+                    .post(Entity.json(wsReq));
+        } catch (RedirectionException e) {
+            // Follow redirect
+            WebTarget newDownloadTarget = client.target(e.getLocation());
+            response = newDownloadTarget.request("application/x-zip").header("User-Agent",
+                            getUA())
+                    .get();
+        }
+        
+        String wsName = response.getHeaderString("x-amz-meta-wsid");
+        if (wsName == null) {
+            wsName = response.getHeaderString("wsId");
+        }
         System.out.println("Name header " + wsName);
         System.out.println("target " + targetDirectory);
         targetDirectory = new File(targetDirectory, wsName);
