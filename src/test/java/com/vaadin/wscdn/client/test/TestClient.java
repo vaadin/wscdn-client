@@ -5,21 +5,26 @@
  */
 package com.vaadin.wscdn.client.test;
 
-import com.vaadin.wscdn.client.Connection;
-import com.vaadin.wscdn.client.WidgetSetRequest;
-import com.vaadin.wscdn.client.WidgetSetResponse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import com.vaadin.wscdn.client.Connection;
+import com.vaadin.wscdn.client.WidgetSetRequest;
+import com.vaadin.wscdn.client.WidgetSetResponse;
 
 /**
  *
@@ -31,7 +36,7 @@ public class TestClient {
     private final String vaadinVersion = "7.6.7";
     private final List<MavenArtifact> testArtifacts = Arrays.asList(
             new MavenArtifact("org.vaadin.addons", "ratingstars", "2.1")
-    );
+            );
 
     public TestClient() {
     }
@@ -65,7 +70,7 @@ public class TestClient {
         assertTrue("Invalid widgetset URL", wsRes.getWidgetSetUrl().contains("ws.vaadin.com"));
     }
 
-    
+
     @Test
     public void compileDownload() {
         WidgetSetRequest wsReq = getWsRequest();
@@ -75,7 +80,7 @@ public class TestClient {
         try {
             tempDir = File.createTempFile("wsdl", "");
             String res = conn.downloadRemoteWidgetSet(wsReq, tempDir);
-            File resDir = new File(tempDir,res);            
+            File resDir = new File(tempDir,res);
             assertNotNull("Widgetset compile request failed", res);
             assertTrue("",resDir.isDirectory());
         } catch (IOException ex) {
@@ -84,7 +89,7 @@ public class TestClient {
         }
     }
 
-    
+
     private WidgetSetRequest getWsRequest() {
         // Create test request
         WidgetSetRequest wsReq = new WidgetSetRequest();
@@ -104,7 +109,7 @@ public class TestClient {
         private final String groupId;
         private final String version;
 
-        private MavenArtifact(String artifactId, String groupId, String version) {
+        private MavenArtifact(String groupId, String artifactId, String version) {
             this.artifactId = artifactId;
             this.groupId = groupId;
             this.version = version;
