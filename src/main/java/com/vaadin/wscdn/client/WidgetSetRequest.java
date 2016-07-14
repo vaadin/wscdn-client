@@ -1,6 +1,5 @@
 package com.vaadin.wscdn.client;
 
-import com.vaadin.ui.Component;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -78,10 +77,6 @@ public class WidgetSetRequest {
      */
     static public WidgetSetRequest create(String vaadinVersion, AddonInfo... addonInfos) {
         return create(COMPILE_STYLE_OBFUSCATED, vaadinVersion, addonInfos);
-    }
-
-    public WidgetSetRequest eager(Class<? extends Component> componentClass) {
-        return eager(componentClass.getCanonicalName());
     }
 
     public WidgetSetRequest eager(String componentFqn) {

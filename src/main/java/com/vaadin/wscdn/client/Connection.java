@@ -1,6 +1,5 @@
 package com.vaadin.wscdn.client;
 
-import com.vaadin.server.VaadinService;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -38,14 +37,10 @@ public class Connection {
     private final WebTarget downloadTarget;
 
     public Connection() {
-        this(null, getDefaultServiceUrl());
+        this(getDefaultServiceUrl());
     }
 
-    public Connection(VaadinService service) {
-        this(service, getDefaultServiceUrl());
-    }
-
-    public Connection(VaadinService service, String vwscdnUrl) {
+    public Connection(String vwscdnUrl) {
         vwscdnUrl = vwscdnUrl == null ? getDefaultServiceUrl() : vwscdnUrl;
         this.client = ClientBuilder.newClient();
         vwscdnUrl = vwscdnUrl.endsWith("/") ? vwscdnUrl : vwscdnUrl + "/";

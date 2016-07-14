@@ -1,8 +1,5 @@
 package com.vaadin.wscdn.client;
 
-import com.vaadin.ui.Component;
-import com.vaadin.ui.UI;
-
 /**
  * Runtime widget set configuration interface.
  *
@@ -17,15 +14,6 @@ public interface WidgetSetConfiguration {
      * This registers to VaadinService directly using default service URL.
      */
     void init();
-
-    /**
-     * Use in a single Vaadin UI only.
-     *
-     * This uses default service URL.
-     *
-     * @param ui The UI where to use this widget set.
-     */
-    void init(UI ui);
 
     /**
      * Use the given service URL.
@@ -47,11 +35,11 @@ public interface WidgetSetConfiguration {
     /**
      * Make this component to use "eager" loading mechanism.
      *
-     * @param componentClass Vaadin component that should be loaded eagerly to
+     * @param componentClassFqn Vaadin component that should be loaded eagerly to
      * client-side.
      *
      * @return Returns this instance
      */
-    WidgetSetConfiguration eager(Class<? extends Component> componentClass);
+    WidgetSetConfiguration eager(String componentClassFqn);
 
 }
