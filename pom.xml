@@ -6,9 +6,9 @@
         <artifactId>vaadin-parent</artifactId>
         <version>1.0.0</version>
     </parent>
-    <version>0.9.0-SNAPSHOT</version>
+    <version>0.9.1-SNAPSHOT</version>
     <artifactId>wscdn-client</artifactId>
-    <groupId>com.vaadin</groupId>
+    <groupId>com.vaadin.wscdn</groupId>
     <packaging>jar</packaging>
     <description>Vaadin widgetset compiler client</description>
     <url>https://vaadin.com/</url>
@@ -88,6 +88,33 @@
             <scope>test</scope>
         </dependency>
         
+        <!-- 
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-client</artifactId>
+            <version>3.0.10.Final</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jaxrs</artifactId>
+            <version>3.0.10.Final</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jaxb-provider</artifactId>
+            <version>3.0.10.Final</version>
+            <scope>test</scope>
+        </dependency>       
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jackson2-provider</artifactId>
+            <version>3.0.10.Final</version>
+            <scope>test</scope>
+        </dependency>
+        -->
+
     </dependencies>
 
     <build>
