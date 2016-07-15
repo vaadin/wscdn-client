@@ -10,14 +10,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-import javax.ws.rs.RedirectionException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.glassfish.jersey.client.ClientProperties;
 
 public class Connection {
 
@@ -90,18 +91,18 @@ public class Connection {
 
     public String downloadRemoteWidgetSet(WidgetSetRequest wsReq,
             File targetDirectory) throws FileNotFoundException, IOException {
-        Response response;
-        try {
-            response = downloadTarget
-                    .request("application/x-zip").header("User-Agent",
-                            getUA())
-                    .post(Entity.json(wsReq));
-        } catch (RedirectionException e) {
+        Response response = downloadTarget
+                .request("application/x-zip").header("User-Agent",
+                        getUA())
+                .property(ClientProperties.FOLLOW_REDIRECTS, Boolean.FALSE)
+                .post(Entity.json(wsReq));
+
+        // redirect?
+        if (response.getStatus() == Status.TEMPORARY_REDIRECT.getStatusCode()) {
             // Follow redirect
-            WebTarget newDownloadTarget = client.target(e.getLocation());
-            response = newDownloadTarget.request("application/x-zip").header("User-Agent",
-                            getUA())
-                    .get();
+            WebTarget newDownloadTarget = client.target(response.getHeaderString("Location"));
+            response = newDownloadTarget.request("application/x-zip")
+                    .header("User-Agent", getUA()).get();
         }
         
         String wsName = response.getHeaderString("x-amz-meta-wsid");
@@ -117,15 +118,17 @@ public class Connection {
         ZipEntry ze = null;
         while ((ze = zipInputStream.getNextEntry()) != null) {
             final File outfile = new File(targetDirectory, ze.getName());
-            outfile.getParentFile().mkdirs();
-            outfile.createNewFile();
-            FileOutputStream fout = new FileOutputStream(outfile);
-            for (int c = zipInputStream.read(); c != -1; c = zipInputStream.
-                    read()) {
-                fout.write(c);
+            if (!ze.isDirectory()) {
+                outfile.getParentFile().mkdirs();
+                outfile.createNewFile();
+                FileOutputStream fout = new FileOutputStream(outfile);
+                for (int c = zipInputStream.read(); c != -1; c = zipInputStream.
+                        read()) {
+                    fout.write(c);
+                }
+                fout.close();
             }
             zipInputStream.closeEntry();
-            fout.close();
         }
         zipInputStream.close();
         

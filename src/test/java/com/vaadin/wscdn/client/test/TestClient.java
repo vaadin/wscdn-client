@@ -11,6 +11,7 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
@@ -78,7 +79,7 @@ public class TestClient {
         Connection conn = new Connection();
         File tempDir;
         try {
-            tempDir = File.createTempFile("wsdl", "");
+            tempDir = Files.createTempDirectory("wsdl").toFile();
             String res = conn.downloadRemoteWidgetSet(wsReq, tempDir);
             File resDir = new File(tempDir,res);
             assertNotNull("Widgetset compile request failed", res);
