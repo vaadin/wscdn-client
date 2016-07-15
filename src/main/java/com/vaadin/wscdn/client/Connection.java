@@ -18,7 +18,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.glassfish.jersey.client.ClientProperties;
 
 public class Connection {
 
@@ -37,7 +36,8 @@ public class Connection {
     private String serviceVersion;
     private String buildTime;
     private final WebTarget downloadTarget;
-
+    private String JERSEY_FOLLOW_REDIRECTS ="jersey.config.client.followRedirects";
+    
     public Connection() {
         this(getDefaultServiceUrl());
     }
@@ -94,7 +94,7 @@ public class Connection {
         Response response = downloadTarget
                 .request("application/x-zip").header("User-Agent",
                         getUA())
-                .property(ClientProperties.FOLLOW_REDIRECTS, Boolean.FALSE)
+                .property(JERSEY_FOLLOW_REDIRECTS, Boolean.FALSE)
                 .post(Entity.json(wsReq));
 
         // redirect?
