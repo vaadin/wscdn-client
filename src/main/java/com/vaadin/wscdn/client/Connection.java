@@ -101,6 +101,8 @@ public class Connection {
         if (response.getStatus() == Status.TEMPORARY_REDIRECT.getStatusCode()) {
             // Follow redirect
             WebTarget newDownloadTarget = client.target(response.getHeaderString("Location"));
+            // Resteasy requires this
+            response.close();
             response = newDownloadTarget.request("application/x-zip")
                     .header("User-Agent", getUA()).get();
         }
@@ -130,6 +132,9 @@ public class Connection {
             zipInputStream.closeEntry();
         }
         zipInputStream.close();
+        
+        // Resteasy requires this
+        response.close();
         
         return wsName;
 
