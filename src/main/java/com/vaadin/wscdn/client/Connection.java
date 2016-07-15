@@ -109,9 +109,8 @@ public class Connection {
         if (wsName == null) {
             wsName = response.getHeaderString("wsId");
         }
-        System.out.println("Name header " + wsName);
-        System.out.println("target " + targetDirectory);
         targetDirectory = new File(targetDirectory, wsName);
+        System.out.println("Downloading widgetset to " + targetDirectory);
         InputStream inputstream = response.readEntity(InputStream.class);
 
         ZipInputStream zipInputStream = new ZipInputStream(inputstream);
