@@ -79,7 +79,7 @@ public class TestClient {
         Connection conn = new Connection();
         File tempDir;
         try {
-            tempDir = Files.createTempDirectory("wsdl").toFile();
+            tempDir = createTempDirectory("wsdl");
             String res = conn.downloadRemoteWidgetSet(wsReq, tempDir);
             File resDir = new File(tempDir,res);
             assertNotNull("Widgetset compile request failed", res);
@@ -143,5 +143,23 @@ public class TestClient {
             return artifactId;
         }
 
+    }
+    
+    private static File createTempDirectory(String prefix) throws IOException {
+        final File temp;
+
+        temp = File.createTempFile(prefix, Long.toString(System.nanoTime()));
+
+        if (!(temp.delete())) {
+            throw new IOException(
+                    "Could not delete temp file: " + temp.getAbsolutePath());
+        }
+
+        if (!(temp.mkdir())) {
+            throw new IOException("Could not create temp directory: "
+                    + temp.getAbsolutePath());
+        }
+
+        return (temp);
     }
 }
