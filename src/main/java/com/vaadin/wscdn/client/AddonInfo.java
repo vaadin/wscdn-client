@@ -1,6 +1,5 @@
 package com.vaadin.wscdn.client;
 
-import java.util.Objects;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -64,15 +63,16 @@ public class AddonInfo {
 
     @Override
     public String toString() {
-        return "{" + "groupId=" + groupId + ", artifactId=" + artifactId + ", version=" + version + '}';
+        return "{" + "groupId=" + groupId + ", artifactId=" + artifactId
+                + ", version=" + version + '}';
     }
 
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 41 * hash + Objects.hashCode(this.groupId);
-        hash = 41 * hash + Objects.hashCode(this.artifactId);
-        hash = 41 * hash + Objects.hashCode(this.version);
+        hash = 41 * hash + hashCode(groupId);
+        hash = 41 * hash + hashCode(artifactId);
+        hash = 41 * hash + hashCode(version);
         return hash;
     }
 
@@ -85,17 +85,23 @@ public class AddonInfo {
             return false;
         }
         final AddonInfo other = (AddonInfo) obj;
-        if (!Objects.equals(this.groupId, other.groupId)) {
+        if (!equals(groupId, other.groupId)) {
             return false;
         }
-        if (!Objects.equals(this.artifactId, other.artifactId)) {
+        if (!equals(artifactId, other.artifactId)) {
             return false;
         }
-        if (!Objects.equals(this.version, other.version)) {
+        if (!equals(version, other.version)) {
             return false;
         }
         return true;
     }
 
-    
+    private static int hashCode(Object o) {
+        return o != null ? o.hashCode() : 0;
+    }
+
+    public static boolean equals(Object a, Object b) {
+        return (a == b) || (a != null && a.equals(b));
+    }
 }

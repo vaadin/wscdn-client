@@ -81,7 +81,7 @@ public class WidgetSetRequest {
 
     public WidgetSetRequest eager(String componentFqn) {
         if (eager == null) {
-            eager = new ArrayList<>();
+            eager = new ArrayList<String>();
         }
         eager.add(componentFqn);
         return this;
@@ -89,7 +89,7 @@ public class WidgetSetRequest {
 
     public WidgetSetRequest addon(AddonInfo addonInfo) {
         if (addons == null) {
-            addons = new ArrayList<>();
+            addons = new ArrayList<AddonInfo>();
         }
         addons.add(addonInfo);
         return this;
@@ -116,12 +116,12 @@ public class WidgetSetRequest {
 
     /* Unique and human-readable string defining the widgetset. */
     public String toWidgetsetString() {
-        SortedSet<String> eagerNames = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        SortedSet<String> eagerNames = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
         if (eager != null) {
             eagerNames.addAll(eager);
         }
 
-        SortedSet<String> addonNames = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        SortedSet<String> addonNames = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
         if (addons != null) {
             for (AddonInfo ci : addons) {
                 addonNames.add(ci.toFullMavenId());
